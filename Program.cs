@@ -1,3 +1,6 @@
+using ASP.NET_StudentRegisrty.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace ASP.NET_StudentRegisrty
 {
     public class Program
@@ -5,6 +8,10 @@ namespace ASP.NET_StudentRegisrty
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MVCStudents;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False")
+                );
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
