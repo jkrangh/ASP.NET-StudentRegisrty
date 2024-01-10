@@ -12,12 +12,12 @@ namespace ASP.NET_StudentRegisrty.Data
         }
         public IEnumerable<Student> GetAll()
         {
-            throw new NotImplementedException();
+            return applicationDbContext.Students.OrderBy(s => s.LastName);
         }
 
         public Student GetById(int id)
         {
-            throw new NotImplementedException();
+            return applicationDbContext.Students.FirstOrDefault(x => x.StudentId == id);
         }
     }
 }

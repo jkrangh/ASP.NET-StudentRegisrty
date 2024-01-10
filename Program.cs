@@ -13,6 +13,8 @@ namespace ASP.NET_StudentRegisrty
                 options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MVCStudents;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False")
                 );
 
+            builder.Services.AddTransient<IStudent, StudentRepository>();
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
