@@ -102,22 +102,39 @@ namespace ASP.NET_StudentRegisrty.Controllers
         // GET: StudentController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (id == null || applicationDbContext.Students == null)
+            {
+                return NotFound();
+            }
+
+            var student = applicationDbContext.Students.Find(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return View(student);
         }
 
         // POST: StudentController/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
+            var student = applicationDbContext.Students.Find(id);
+            if (ModelState.IsValid)
             {
+                try
+                {
+                    applicationDbContext.Remove(student);
+                    applicationDbContext.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    return View();
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
-        }
+            return View(student);
+        }        
     }
 }
