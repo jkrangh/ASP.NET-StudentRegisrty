@@ -22,7 +22,7 @@ namespace ASP.NET_StudentRegisrty.Controllers
         // GET: StudentController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            return View(studentRep.GetById(id));
         }
 
         // GET: StudentController/Create
