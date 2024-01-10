@@ -1,4 +1,5 @@
 ﻿using ASP.NET_StudentRegisrty.Data;
+using ASP.NET_StudentRegisrty.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,10 +8,12 @@ namespace ASP.NET_StudentRegisrty.Controllers
     public class StudentController : Controller
     {
         private readonly IStudent studentRep;
+        private readonly ApplicationDbContext applicationDbContext;
 
-        public StudentController(IStudent studentRep)
+        public StudentController(IStudent studentRep, ApplicationDbContext applicationDbContext)
         {
             this.studentRep = studentRep;
+            this.applicationDbContext = applicationDbContext;
         }
 
         // GET: StudentController
@@ -34,11 +37,17 @@ namespace ASP.NET_StudentRegisrty.Controllers
         // POST: StudentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(/*[Bind("StudentId, FirstName, LastName")]*/Student student)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid) 
+                { 
+                    applicationDbContext.Add(student);
+                    applicationDbContext.SaveChanges();
+                    return RedirectToAction(nameof(Index));
+                }
+                else { return View(); }
             }
             catch
             {

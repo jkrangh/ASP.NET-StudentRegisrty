@@ -9,7 +9,8 @@ namespace ASP.NET_StudentRegisrty.Data
         public StudentRepository(ApplicationDbContext applicationDbContext)
         {
             this.applicationDbContext = applicationDbContext;
-        }
+        }     
+
         public IEnumerable<Student> GetAll()
         {
             return applicationDbContext.Students.OrderBy(s => s.LastName);
