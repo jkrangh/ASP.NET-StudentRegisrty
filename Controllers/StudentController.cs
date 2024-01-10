@@ -2,6 +2,8 @@
 using ASP.NET_StudentRegisrty.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace ASP.NET_StudentRegisrty.Controllers
 {
@@ -56,24 +58,45 @@ namespace ASP.NET_StudentRegisrty.Controllers
         }
 
         // GET: StudentController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null || applicationDbContext.Students == null)
+            {
+                return NotFound();
+            }
+
+            var student = applicationDbContext.Students.Find(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return View(student);
         }
 
         // POST: StudentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Student student)
         {
-            try
+            if (id != student.StudentId)
             {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    applicationDbContext.Update(student);
+                    applicationDbContext.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    return View();
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(student);
         }
 
         // GET: StudentController/Delete/5
