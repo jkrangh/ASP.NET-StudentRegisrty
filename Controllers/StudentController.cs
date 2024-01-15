@@ -61,17 +61,19 @@ namespace ASP.NET_StudentRegisrty.Controllers
         // GET: StudentController/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null || applicationDbContext.Students == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var student = applicationDbContext.Students.Find(id);
-            if (student == null)
+            StudentViewModel studentVM = new StudentViewModel();
+            studentVM.Student = applicationDbContext.Students.Find(id);
+            studentVM.CurrentUser = new CurrentUser() { UserName = Environment.UserName };
+            if (studentVM.Student == null)
             {
                 return NotFound();
             }
-            return View(student);
+            return View(studentVM);
         }
 
         // POST: StudentController/Edit/5
