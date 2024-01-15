@@ -1,5 +1,6 @@
 ﻿using ASP.NET_StudentRegisrty.Data;
 using ASP.NET_StudentRegisrty.Models;
+using ASP.NET_StudentRegisrty.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -76,9 +77,9 @@ namespace ASP.NET_StudentRegisrty.Controllers
         // POST: StudentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Student student)
+        public ActionResult Edit(int id, StudentViewModel studentVM)
         {
-            if (id != student.StudentId)
+            if (id != studentVM.Student.StudentId)
             {
                 return NotFound();
             }
@@ -87,7 +88,7 @@ namespace ASP.NET_StudentRegisrty.Controllers
             {
                 try
                 {
-                    applicationDbContext.Update(student);
+                    applicationDbContext.Update(studentVM.Student);
                     applicationDbContext.SaveChanges();
                 }
                 catch (Exception)
@@ -96,7 +97,7 @@ namespace ASP.NET_StudentRegisrty.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(studentVM);
         }
 
         // GET: StudentController/Delete/5
